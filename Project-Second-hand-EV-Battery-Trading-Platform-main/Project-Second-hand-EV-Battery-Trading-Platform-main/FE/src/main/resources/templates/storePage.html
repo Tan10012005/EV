@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet"
+  />
+
+  <!-- Font Awesome Icons -->
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+          integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+  />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/storePage.css}" />
+</head>
+<body>
+<!-- =============================
+     HEADER SECTION
+     ============================= -->
+<header th:include="/commonComponents/header.html"></header>
+<button class="create"><a th:href="@{/home/postForm}">Tạo bài đăng</a></button>
+<div class="page">
+  <!-- Breadcrumb -->
+  <div class="page__header">
+    <nav class="breadcrumb">
+      <a href="#" class="breadcrumb__link">Trang chủ</a>
+      <span class="breadcrumb__separator">/</span>
+      <span class="breadcrumb__current" th:text="${user.getUsername()}">Cửa hàng của Nguyen Van A</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="page__title">
+      <h1>CỬA HÀNG</h1>
+      <div class="page__title__divider"></div>
+    </header>
+    <div class="page__notify">
+      <i class="fa-solid fa-bell"></i>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile">
+    <!-- Sidebar -->
+    <aside class="profile__sidebar">
+      <div class="profile__sidebar__user">
+        <div class="profile__avatar">
+          <img
+                  th:src="${user.avatarUrl}"
+                  alt="User Avatar"
+                  class="profile__avatar-image"
+          />
+        </div>
+        <div class="profile__info">
+          <h2 class="profile__name" th:text="${user.getUsername()}">Nguyen Van A</h2>
+<!--          <p class="profile__rating">Đánh Gía: 4.7 ⭐</p>-->
+        </div>
+      </div>
+
+      <div class="reviews">
+        <div class="reviews__rating">
+          <p class="reviews__rating-number" th:text="${averageRating}+'⭐'">4.7⭐</p>
+          <p class="reviews__rating-text">Đánh giá từ người mua</p>
+          <p class="reviews__rating-detail">Tất cả</p>
+        </div>
+        <div class="reviwer" th:each="review : ${reviews}">
+          <img
+                  th:src="${review.getReviewer().getAvatarUrl()}"
+                  alt="Reviewer Avatar"
+                  class="reviwer__avatar"
+          />
+          <div class="reviwer__content">
+              <h3 class="reviwer__name" th:text="${review.getReviewer().getUsername()}">Nguyen Van B</h3>
+            <p class="reviwer__text" th:text="${review.getComment()}">
+              Người bán hàng rất nhiệt tình, sản phẩm đúng như mô tả. Sẽ ủng
+              hộ shop lần sau.
+            </p>
+            <span class="reviwer__time" th:text="${#temporals.format(review.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">10/10/2023</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- Product Grid -->
+    <main class="profile__content">
+      <div class="tabs">
+        <button class="tabs__item tabs__item--active">Đang hiện thị</button>
+        <button class="tabs__item">Đã bán</button>
+      </div>
+
+      <div class="product-list active">
+        <!-- Product Card 1 -->
+        <article class="product-card" th:each="post : ${posts}">
+          <img
+                  th:src="${post.getImages()[0]}"
+                  alt="Feliz - biển MD"
+                  class="product-card__image"
+          />
+          <h3 class="product-card__title" th:text="${post.getTitle()}">
+            Feliz - biển MD. Giấy tờ đầy đủ
+          </h3>
+          <p class="product-card__price" th:text="${post.getPriceFormated()}">13.000.000 đ</p>
+          <p class="product-card__location" th:text="${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}
+          +' - '+${post.getSeller().getCity()}">9 giờ trước - Hồ Chí Minh</p>
+        </article>
+        <div class="product-list" th:each="transaction : ${transactions}">
+          <!-- Product Card 1 -->
+          <article class="product-card">
+            <img
+                    th:src="${transaction.getImageUrl()}"
+                    alt="Feliz - biển MD"
+                    class="product-card__image"
+            />
+            <h3 class="product-card__title" th:text="${transaction.getPostTitle()}">
+              Feliz - biển MD. Giấy tờ đầy đủwdbawjdwabjkwadjkawnawjkd
+            </h3>
+            <p class="product-card__price" th:text="${transaction.getPrice()}">13.000.000 đ</p>
+            <p class="product-card__location" th:text="'Ngày khởi tạo: ' + ${transaction.getCreatedAt() != null ? #temporals.format(transaction.getCreatedAt(), 'dd-MM-yyyy') : 'N/A'}">9 giờ trước - Hồ Chí Minh</p>
+            <p class="product-card__buyer" th:text="'Người mua: '+${transaction.getBuyer().getUsername()}">dawdaw</p>
+            <p class="product-card__rating" th:text="'Đánh giá: '+${transaction.getRate()}+'⭐'">5⭐</p>
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<!-- =============================
+     FOOTER SECTION
+     ============================= -->
+<footer th:include="/commonComponents/footer.html"></footer>
+<script th:src="@{/js/storePage.js}"></script>
+</body>
+</html>

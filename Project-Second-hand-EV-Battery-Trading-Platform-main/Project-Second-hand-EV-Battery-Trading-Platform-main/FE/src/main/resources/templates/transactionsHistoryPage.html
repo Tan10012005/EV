@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử giao dịch - EV Second</title>
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <!-- External CSS -->
+    <link rel="stylesheet" th:href="@{/css/transactionsHistoryPage.css}" />
+</head>
+<body>
+<header th:include="/commonComponents/header.html"></header>
+<section class="container">
+    <div class="container__header">
+        <div class="container__header__direction">
+            <a href="/home">Trang Chủ</a>
+            <span>/</span>
+            <a href="#" class="href--active">Lịch Sử Giao Dịch</a>
+        </div>
+        <h2 class="container__header__title">Lịch Sử Giao Dịch</h2>
+        <div class="container__header__category">
+            <button><a th:href="@{/home/transactionsHistory}">Mua</a></button>
+            <button><a th:href="@{/home/transactionsHistory/seller}">Bán</a></button>
+            <div class="container__header__category__status">
+                <div class="container__header__category__status__title">
+                    <span>Trạng thái</span><i class="fa-solid fa-play"></i>
+                </div>
+                <ul class="container__header__category__status__List">
+                    <li>Tất cả</li>
+                    <li>Giao dịch thành công</li>
+                    <li>Đang chờ xử lý</li>
+                    <li>Giao dịch thất bại</li>
+                </ul>
+            </div>
+            <div class="container__header__category__date">
+                <span>Ngày Khởi tạo</span>
+                <i class="fa-solid fa-arrow-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="container__body">
+        <!-- Transaction Item 1 -->
+        <h2 class="container__body__empty" th:if="${noTransactions == false}">Không có giao dịch</h2>
+        <div th:each="transaction: ${transactions}" class="container__body__item">
+            <div class="container__body__item__header">
+                <div th:text="${transaction.getTransactionId()}" class="container__body__item__id">#039876547</div>
+                <div
+                        class="container__body__item__status container__body__item__status--success"
+                        th:text="${transaction.getStatus()}"
+                >
+                    Giao dịch thành công
+                </div>
+            </div>
+            <div class="container__body__item__main">
+                <div class="container__body__item__image">
+                    <img
+                            th:src="${transaction.getImageUrl()}"
+                            th:alt="${transaction.getPostTitle()}"
+                    />
+                </div>
+                <div class="container__body__item__details">
+                    <h3 th:text="${transaction.getPostTitle()}" class="container__body__item__title">
+                        Feliz - biển MD. Giấy tờ đầy đủ
+                    </h3>
+                    <div th:text="${transaction.getPrice()}+' đ'" class="container__body__item__price">13.500.000 đ</div>
+                    <div th:text="'Ngày Khởi tạo: '+${transaction.getCreatedAt() != null ? #temporals.format(transaction.getCreatedAt(), 'dd-MM-yyyy') : 'N/A'}" class="container__body__item__date">
+                        Ngày khởi tạo: 07/08/2025
+                    </div>
+                </div>
+                <div class="container__body__item__info">
+                    <div th:text="'Người bán: '+${transaction.getSeller().getUsername()}" class="container__body__item__seller">
+                        Người bán: Nguyễn Thế Anh
+                    </div>
+                    <div th:text="'Người mua: '+${transaction.getBuyer().getUsername()}" class="container__body__item__buyer">
+                        Người mua: Nguyễn Văn A
+                    </div>
+                </div>
+                <div class="container__body__item__rating">
+                    <span class="container__body__item__rating__score" th:text="${transaction.getRate()}">4.5</span>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer th:include="/commonComponents/footer.html"></footer>
+<script th:src="@{/js/transactionsHistoryPage.js}"></script>
+</body>
+</html>

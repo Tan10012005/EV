@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảo mật - EV Second</title>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" th:href="@{/css/securityPage.css}" />
+</head>
+<body>
+<section th:include="memberPage"></section>
+
+<section class="updatePassword">
+    <button class="back">
+        <i class="fa-solid fa-arrow-left"></i><span>Back</span>
+    </button>
+    <h1 class="updatePassword__title">Đổi mật khẩu</h1>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <form method="post" th:action="@{/account/security}" th:object="${user}" class="updatePassword__container">
+        <div class="updatePassword__container__inputGroup">
+            <label for="currentPassword">Mật khẩu hiện tại</label>
+            <input
+                    type="password"
+                    id="currentPassword"
+                    name="currentPassword"
+                    placeholder="Nhập mật khẩu hiện tại"
+                    required
+            />
+            <p th:if="${errorMessage != null}" th:text="${errorMessage}" style="color: red"></p>
+        </div>
+        <div class="updatePassword__container__inputGroup">
+            <label for="newPassword">Mật khẩu mới</label>
+            <input
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    placeholder="Nhập mật khẩu mới"
+                    required
+            />
+            <p th:if="${passwordError != null}" th:text="${passwordError}" style="color: red"></p>
+        </div>
+        <div class="updatePassword__container__inputGroup">
+            <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+            <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="Nhập lại mật khẩu mới"
+                    required
+            />
+        </div>
+        <div class="updatePassword__container__actions">
+            <input type="submit" class="updatePassword__container__submit" value="Đổi mật khẩu" />
+            <input type="button" class="updatePassword__container__cancel" value="Hủy" />
+        </div>
+    </form>
+</section>
+
+<script th:src="@{/js/securityPage.js}"></script>
+</body>
+</html>

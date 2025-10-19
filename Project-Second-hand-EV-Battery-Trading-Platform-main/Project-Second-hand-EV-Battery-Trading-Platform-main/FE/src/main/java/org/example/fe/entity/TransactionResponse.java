@@ -1,0 +1,122 @@
+package org.example.fe.entity;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.time.LocalDateTime;
+
+public class TransactionResponse {
+    private Integer transactionId;
+    private MemberResponse buyer;
+    private MemberResponse seller;
+    private PostResponse post;
+    private String postTitle;
+    private BigDecimal price;
+    private String status;
+    private LocalDateTime createdAt;
+    private String imageUrl;
+    private int rate;
+
+    public TransactionResponse() {
+    }
+
+    public TransactionResponse(Integer transactionId, MemberResponse buyer
+            , String buyerName, MemberResponse seller
+            , PostResponse post, String postTitle, BigDecimal price
+            , String status, LocalDateTime createdAt, String imageUrl, int rate) {
+        this.transactionId = transactionId;
+        this.buyer = buyer;
+        this.seller = seller;
+        this.post = post;
+        this.postTitle = postTitle;
+        this.price = price;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.imageUrl = imageUrl;
+        this.rate = rate;
+    }
+
+
+    public Integer getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public MemberResponse getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(MemberResponse buyer) {
+        this.buyer = buyer;
+    }
+
+    public MemberResponse getSeller() {
+        return seller;
+    }
+
+    public void setSeller(MemberResponse seller) {
+        this.seller = seller;
+    }
+
+    public PostResponse getPost() {
+        return post;
+    }
+
+    public void setPost(PostResponse post) {
+        this.post = post;
+    }
+
+    public String getPostTitle() {
+        return postTitle;
+    }
+
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
+    }
+
+    public String getPrice() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        DecimalFormat decimalFormat = new DecimalFormat("###,###", symbols);
+        return decimalFormat.format(price);
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+}

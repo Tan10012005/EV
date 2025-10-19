@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân</title>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" th:href="@{/css/personalInformationPage.css}"/>
+</head>
+<body>
+<section th:include="memberPage"></section>
+
+<section class="profile">
+    <button class="back">
+        <i class="fa-solid fa-arrow-left"></i><span>Back</span>
+    </button>
+    <button class="profile__edit">Chỉnh sửa</button>
+    <h1 class="profile__title">Thông tin cá nhân</h1>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <form method="post" th:action="@{/account/personalInformation/uploadAvatar}" enctype="multipart/form-data" class="profile__avatar__form">
+        <input type="file" name="avatar" accept="image/*"/>
+        <input type="submit" value="Tải lên" />
+    </form>
+
+    <form method="post" th:action="@{/account/personalInformation}" th:object="${user}" class="profile__container">
+        <div class="profile__avatar">
+            <img th:src="${user != null && user.avatarUrl != null ? user.avatarUrl : 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA5L3NyLWltYWdlLTI5MDgyNS1oaS1zLTU5Mi5qcGc.jpg'}" alt="avatar" />
+            <button type="button" class="profile__avatar__edit">Thay đổi ảnh</button>
+        </div>
+        <div class="profile__container__info">
+            <div class="profile__container__info__inputGroup">
+                <label for="name">Họ và tên</label>
+                <input type="text" id="name" th:field="*{username}" disabled="true" />
+                <p th:if="${usernameError != null}" th:text="${usernameError}" style="color: red"></p>
+            </div>
+            <div class="profile__container__info__inputGroup">
+                <label for="createdDate">Ngày tạo tài khoản</label>
+                <input
+                        type="text"
+                        id="createdDate"
+                        th:field="*{createdAt}"
+                        disabled="true"
+                />
+                <!-- Hidden fields for form submission -->
+                <input type="hidden" th:field="*{memberId}" />
+                <input type="hidden" th:field="*{role}" />
+                <input type="hidden" th:field="*{password}" />
+                <input type="hidden" th:field="*{avatarUrl}" />
+                <input type="hidden" th:field="*{status}" />
+                <input type="hidden" th:field="*{createdAt}" />
+            </div>
+            <div class="profile__container__info__inputGroup">
+                <label for="city">Thành Phố</label>
+                <select
+                        id="city"
+                        th:field="*{city}"
+                        disabled="true"
+                        class="profile__select"
+                >
+                    <option th:if="${user.getCity() != null}" th:value="${user.getCity()}" th:text="${user.getCity()}"></option>
+                    <option value="Chưa cập nhật" th:if="${user.getCity() == null}">Chưa cập nhật</option>
+                    <option value="Hà Nội">Hà Nội</option>
+                    <option value="Thành phố Hồ Chí Minh">Thành phố Hồ Chí Minh</option>
+                    <option value="Đà Nẵng">Đà Nẵng</option>
+                    <option value="Hải Phòng">Hải Phòng</option>
+                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option value="Biên Hòa">Biên Hòa (Đồng Nai)</option>
+                    <option value="Huế">Huế (Thừa Thiên Huế)</option>
+                    <option value="Nha Trang">Nha Trang (Khánh Hòa)</option>
+                    <option value="Buôn Ma Thuột">Buôn Ma Thuột (Đắk Lắk)</option>
+                    <option value="Quy Nhon">Quy Nhon (Bình Định)</option>
+                    <option value="Vũng Tàu">Vũng Tàu (Bà Rịa - Vũng Tàu)</option>
+                    <option value="Nam Định">Nam Định</option>
+                    <option value="Phan Thiết">Phan Thiết (Bình Thuận)</option>
+                    <option value="Long Xuyên">Long Xuyên (An Giang)</option>
+                    <option value="Thái Nguyên">Thái Nguyên</option>
+                    <option value="Thanh Hóa">Thanh Hóa</option>
+                    <option value="Rach Giá">Rach Giá (Kiên Giang)</option>
+                    <option value="Cà Mau">Cà Mau</option>
+                    <option value="Cam Ranh">Cam Ranh (Khánh Hòa)</option>
+                    <option value="Vinh">Vinh (Nghệ An)</option>
+                    <option value="Mỹ Tho">Mỹ Tho (Tiền Giang)</option>
+                    <option value="Đà Lạt">Đà Lạt (Lâm Đồng)</option>
+                    <option value="Bến Tre">Bến Tre</option>
+                    <option value="Vĩnh Long">Vĩnh Long</option>
+                    <option value="Trà Vinh">Trà Vinh</option>
+                </select>
+            </div>
+        </div>
+        <div class="profile__container__info">
+            <div class="profile__container__info__inputGroup">
+                <label for="phone">Số điện thoại</label>
+                <input type="text" id="phone" th:field="*{phone}" disabled="true" />
+                <p th:if="${phoneError != null}" th:text="${phoneError}" style="color: red"></p>
+            </div>
+            <div class="profile__container__info__inputGroup">
+                <label for="address">Địa chỉ</label>
+                <input type="text" id="address" th:field="*{address}" disabled="true" />
+            </div>
+            <div class="profile__container__info__inputGroup">
+                <label for="email">Email</label>
+                <input
+                        type="email"
+                        id="email"
+                        th:field="*{email}"
+                        disabled="true"
+                />
+                <p th:if="${emailError != null}" th:text="${emailError}" style="color: red"></p>
+            </div>
+        </div>
+        <input type="submit" class="profile__container__submit" value="Lưu thay đổi" />
+        <input type="button" class="profile__container__cancel" value="Hủy" />
+    </form>
+</section>
+<script th:src="@{/js/commonComponents/personalPage.js}"></script>
+</body>
+</html>
+

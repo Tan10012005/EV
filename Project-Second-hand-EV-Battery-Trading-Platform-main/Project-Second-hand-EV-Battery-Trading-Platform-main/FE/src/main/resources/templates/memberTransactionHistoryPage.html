@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử giao dịch thành viên - EV Second</title>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" th:href="@{/css/memberTransactionHistoryPage.css}"/>
+</head>
+<body>
+<section th:include="memberPage"></section>
+<section class="transaction">
+    <button class="back">
+        <i class="fa-solid fa-arrow-left"></i><span>Quay lại</span>
+    </button>
+
+    <h1 class="transaction__title">Lịch sử giao dịch</h1>
+
+    <!-- Transaction Tabs -->
+    <div class="transaction__tabs">
+        <button class="transaction__tab transaction__tab--active">Mua</button>
+        <button class="transaction__tab">Bán</button>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="transaction__list">
+        <h3 th:if="${noTransactions == true}">No transactions</h3>
+        <!-- Transaction Item 1 -->
+        <div th:each="transaction :${transactions}" class="transaction__item">
+            <!-- Status Block (Absolute Position) -->
+            <span th:text="${transaction.getStatus()}" class="transaction__status transaction__status--success">
+            Giao dịch thành công
+            </span>
+
+            <!-- Block 1: Image -->
+            <div class="transaction__item__image">
+                <img
+                        th:src="${transaction.getImageUrl()}"
+                        alt="IMPES Scooter"
+                />
+            </div>
+
+            <!-- Block 2: Main Info (ID, Title, Price, Date) -->
+            <div class="transaction__item__info">
+                <div class="transaction__item__header">
+                    <span class="transaction__id" th:text="${transaction.getTransactionId()}">#039876547</span>
+                </div>
+                <h3 class="transaction__item__title" th:text="${transaction.getPostTitle()}">IMPES CÓ SẮC PIN ĐẦY ĐỦ</h3>
+                <div class="transaction__item__price" th:text="${transaction.getPrice()}">8.500.000 đ</div>
+                <div class="transaction__item__date" th:text="'Ngày khởi tạo: ' + ${transaction.getCreatedAt() != null ? #temporals.format(transaction.getCreatedAt(), 'dd-MM-yyyy') : 'N/A'}">Ngày khởi tạo: 07/08/2025</div>
+            </div>
+
+            <!-- Block 3: Parties (Seller & Buyer) -->
+            <div class="transaction__item__parties">
+                <div th:text="'Người bán:'+${transaction.getSeller().getUsername()}" class="transaction__item__seller">
+                    Người bán: Nguyễn Thế Anh
+                </div>
+                <div th:text="'Người mua::'+${transaction.getBuyer().getUsername()}" class="transaction__item__buyer">Người mua: Nguyễn Văn A</div>
+            </div>
+        </div>
+    </div>
+</section>
+<script th:src="@{/js/commonComponents/personalPage.js}"></script>
+<script>
+    // Tab switching functionality
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".transaction__tab");
+
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", function () {
+                if (this.textContent === "Mua") {
+                    window.location.href = "/account/transactionHistory";
+                } else {
+                    window.location.href = "/account/transactionHistory/seller";
+                }
+
+            });
+        });
+        if (window.location.pathname.includes("seller")) {
+            tabs[0].classList.remove("transaction__tab--active");
+            tabs[1].classList.add("transaction__tab--active");
+        } else {
+            tabs[1].classList.remove("transaction__tab--active");
+            tabs[0].classList.add("transaction__tab--active");
+        }
+    });
+</script>
+</body>
+</html>

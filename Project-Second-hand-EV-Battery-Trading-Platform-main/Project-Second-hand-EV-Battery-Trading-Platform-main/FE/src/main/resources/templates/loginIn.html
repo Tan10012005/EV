@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - EV Second</title>
+    <link rel="stylesheet" th:href="@{/css/loginIn.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="brandInfo">
+    <strong>EV Second</strong>
+    <p>Mua, bán hoặc đổi pin xe điện đã qua sử dụng dễ dàng.</p>
+</div>
+<form th:action="@{/login/submit}" method="post">
+    <p>Chào mừng tới <strong>EV Second</strong></p>
+    <h1 class="title">Đăng Nhập</h1>
+    <div class="inputGroup">
+        <label for="username">Tên đăng nhập :</label>
+        <input type="text" id="username" name="username" placeholder="Nhập Username" required />
+    </div>
+    <div class="inputGroup">
+        <label for="password">Mật khẩu :</label>
+        <input type="password" id="password" name="password" placeholder="Mật Khẩu" required />
+    </div>
+    <div class="authLinks">
+        <a href="#">Quên Mật Khẩu</a>
+        <p>Chưa có tài khoản ? <a href="/signup">Đăng ký</a></p>
+    </div>
+    <input type="submit" value="Đăng Nhập" class="submitBtn" />
+    <p th:if="${errorMessage != null}" style="color: red"
+       th:text="${errorMessage}" ></p>
+</form>
+</body>
+</html>

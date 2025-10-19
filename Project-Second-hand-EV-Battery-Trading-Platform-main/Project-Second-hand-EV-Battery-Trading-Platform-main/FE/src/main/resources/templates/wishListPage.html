@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách yêu thích - EV Second</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/wishListPage.css}"/>
+
+</head>
+<body>
+<header th:include="/commonComponents/header.html"></header>
+<section class="container">
+    <div class="container__header">
+        <div class="container__header__direction">
+            <a th:href="@{/home}">Trang chủ</a>
+            <span>/</span>
+            <a href="#" class="href--active">Tin đăng lưu</a>
+        </div>
+        <h2 class="container__header__title">TIN ĐĂNG LƯU</h2>
+    </div>
+
+    <!-- Wishlist Items -->
+    <div class="container__body">
+        <div th:each="favorite: ${wishlists}" class="container__body__item">
+            <input type="hidden" th:value="${favorite.getPost().getPostsId()}"/>
+            <div class="container__body__item__main">
+                <div class="container__body__item__image">
+                    <img
+                            th:src="${favorite.getPost().getPostImages().get(0).getImageUrl()}"
+                            th:alt="${favorite.getPost().getTitle()}"
+                    />
+                </div>
+                <div class="container__body__item__details">
+                    <h3 th:text="${favorite.getPost().getTitle()}" class="container__body__item__title">
+                        Undefined
+                    </h3>
+                    <div class="container__body__item__price" th:text="${favorite.getPost().getPriceFormated()}">Undefined</div>
+                    <div class="container__body__item__seller" th:text="'Người bán: '+${favorite.getPost().getSeller().getUsername()}">
+                        Undefined
+                    </div>
+                </div>
+                <div class="container__body__item__actions">
+                    <button
+                            class="btn__heart btn__heart--active"
+                            title="Bỏ yêu thích"
+                    >
+                        <a style="text-decoration: none" th:href="@{'/home/wishList/delete/' + ${favorite.getFavoritesId()}}">
+                            <i class="fa-solid fa-heart"></i>
+                        </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer th:include="/commonComponents/footer.html"></footer>
+<script th:src="@{/js/wishListPage.js}"></script>
+</body>
+</html>
